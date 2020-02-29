@@ -36,14 +36,15 @@ extern "C" {
 
 #[wasm_bindgen(start)]
 pub async fn main() -> Result<(), JsValue> {
-    log("Assembly initialized.");
-
-    init_accounts().await?;
+    match init_accounts().await {
+        Ok(_) =>  log("Assembly initialized."),
+        Err(e) => log_owned(format!("{:?}", e)),
+    }
 
     Ok(())
 }
 
-pub async fn init_accounts() -> Result<(), JsValue> {
+pub async fn init_accounts() -> Result<(), ClientError> {
     let accounts = client::accounts().await?;
     refresh_content(&accounts).await?;
 
@@ -129,7 +130,7 @@ pub async fn login() -> Result<(), JsValue> {
     Ok(())
 }
 
-async fn refresh_content(accounts: &Vec<Account>) -> Result<(), JsValue> {
+async fn refresh_content(accounts: &Vec<Account>) -> Result<(), ClientError> {
     let html = accounts
         .iter()
         .enumerate()

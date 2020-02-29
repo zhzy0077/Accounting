@@ -107,15 +107,14 @@ async fn main() -> Result<(), ServerError> {
                 CookieIdentityPolicy::new(&key)
                     .name("token")
                     .max_age(Duration::days(365).num_seconds())
-                    .secure(true),
+                    .secure(false),
             ))
             .data(db.clone())
             .data(web::JsonConfig::default().limit(4096))
             .wrap(middleware::Logger::default())
             .service(web::resource("/login").route(web::post().to(login)))
             .service(web::resource("/operation").route(web::post().to(operation)))
-            .service(web::resource("/account").route(web::get().to(account)))
-            .service(web::resource("/account").route(web::post().to(add_account)))
+            .service(web::resource("/account").route(web::get().to(account)).route(web::post().to(add_account)))
             .service(actix_files::Files::new("/", "./static/").index_file("index.html"))
     })
     .bind(cfg.bind_addr)?
