@@ -1,0 +1,21 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Account {
+    pub name: String,
+    pub balance: i64,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Operation {
+    pub from: String,
+    pub to: String,
+    pub comment: String,
+    pub amount: i64,
+    pub datetime: i64,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct LoginChallenge {
+    pub token: String,
+}

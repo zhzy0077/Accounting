@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Login</title>
+    <style>
+        .main {
+            position: relative;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+<script type="module">
+    import init, { login } from './client.js';
+
+    async function run() {
+        await init();
+        window.login = login;
+    }
+    run();
+</script>
+<div class="container main">
+    <div style="padding-top: 40px">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="code">Code</label>
+            </div>
+            <input type="text" class="form-control" placeholder="code" id="code">
+        </div>
+        <button onclick="login()" type="button" class="btn btn-primary">
+            Login
+        </button>
+    </div>
+</div>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

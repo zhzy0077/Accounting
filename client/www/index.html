@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Accounting</title>
+    <style>
+        .main {
+            position: relative;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+<script type="module">
+    import init, { update_accounts, do_transfer, add_account } from './client.js';
+
+    async function run() {
+        await init();
+        window.update_accounts = update_accounts;
+        window.do_transfer = do_transfer;
+        window.add_account = add_account;
+    }
+    run();
+</script>
+<div class="container main">
+    <nav class="nav nav-pills nav-fill nav-tabs">
+        <a class="nav-item nav-link active" id="nav-account-tab" data-toggle="tab" href="#nav-accounts">Accounts</a>
+        <a class="nav-item nav-link" id="nav-transfer-tab" data-toggle="tab" href="#nav-transfer" role="tab">Transfer</a>
+        <a class="nav-item nav-link" id="nav-new-tab" data-toggle="tab" href="#nav-add" role="tab">Add account</a>
+    </nav>
+    <div class="tab-content" id="nav-tabContent" style="margin-top: 20px;">
+        <div class="tab-pane active" id="nav-accounts">
+            <a class="btn btn-outline-secondary" href="login.html" role="button">Login</a>
+            <button onclick="update_accounts()" type="button" id="getAccounts" style="float: right" class="btn btn-primary">
+                Get accounts
+            </button>
+            <div style="padding-top: 40px; clear: both">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Balance</th>
+                    </tr>
+                    </thead>
+                    <tbody id="balance_content">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane" id="nav-transfer">
+            <a class="btn btn-outline-secondary" href="login.html" role="button">Login</a>
+            <button onclick="do_transfer()" type="button" id="transfer" style="float: right" class="btn btn-primary">
+                Transfer
+            </button>
+            <div style="padding-top: 40px; clear: both">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="from_account">From</label>
+                    </div>
+                    <select class="custom-select" id="from_account">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="to_account">To</label>
+                    </div>
+                    <select class="custom-select" id="to_account">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="amount">Amount</label>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Decimal amount" id="amount">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="comment">Comment</label>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Comment(optional)" id="comment">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="nav-add">
+            <a class="btn btn-outline-secondary" href="login.html" role="button">Login</a>
+            <button onclick="add_account()" type="button" style="float: right" class="btn btn-primary">
+                Add
+            </button>
+            <div style="padding-top: 40px; clear: both">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="account_name">Account</label>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Name" id="account_name">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
