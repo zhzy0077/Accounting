@@ -62,7 +62,6 @@ pub async fn login(token: String) -> Result<(), ClientError> {
     }
 }
 
-
 pub async fn add_account(account: Account) -> Result<(), ClientError> {
     let mut opts = RequestInit::new();
     opts.method("POST");

@@ -37,7 +37,7 @@ extern "C" {
 #[wasm_bindgen(start)]
 pub async fn main() -> Result<(), JsValue> {
     match init_accounts().await {
-        Ok(_) =>  log("Assembly initialized."),
+        Ok(_) => log("Assembly initialized."),
         Err(e) => log_owned(format!("{:?}", e)),
     }
 
@@ -86,7 +86,10 @@ fn make_operation() -> Result<Operation, ClientError> {
         .value()
         .parse()?;
     let comment = get_element_by_id!("comment", HtmlInputElement).value();
-    let datetime = Date::new_0().value_of() as i64;
+    let datetime = match get_element_by_id!("date", HtmlInputElement).value() {
+        date_str if !date_str.is_empty() => Date::parse(&date_str),
+        _ => Date::new_0().value_of(),
+    } as i64;
 
     Ok(Operation {
         from,

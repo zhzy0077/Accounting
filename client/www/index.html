@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
 
     <title>Accounting</title>
     <style>
@@ -85,6 +86,12 @@
                     </div>
                     <input type="text" class="form-control" placeholder="Comment(optional)" id="comment">
                 </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="date">Date</label>
+                    </div>
+                    <input type="text" class="form-control datepicker" placeholder="Date(optional)" id="date">
+                </div>
             </div>
         </div>
         <div class="tab-pane" id="nav-add">
@@ -107,6 +114,14 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+$('.datepicker').datepicker({
+    toggleActive: true,
+    autoclose: true,
+});
+</script>
 
 </body>
 </html>
