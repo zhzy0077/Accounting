@@ -1,4 +1,5 @@
 use std::num::ParseIntError;
+use std::num::ParseFloatError;
 
 #[derive(Debug)]
 pub enum ClientError {
@@ -29,6 +30,12 @@ impl From<ClientError> for wasm_bindgen::JsValue {
 
 impl From<ParseIntError> for ClientError {
     fn from(e: ParseIntError) -> Self {
+        ClientError::InputError(format!("Wrong number: {}", e))
+    }
+}
+
+impl From<ParseFloatError> for ClientError {
+    fn from(e: ParseFloatError) -> Self {
         ClientError::InputError(format!("Wrong number: {}", e))
     }
 }

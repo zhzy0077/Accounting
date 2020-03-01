@@ -82,7 +82,7 @@ pub async fn do_transfer() -> Result<(), JsValue> {
 fn make_operation() -> Result<Operation, ClientError> {
     let from = get_element_by_id!("from_account", HtmlSelectElement).value();
     let to = get_element_by_id!("to_account", HtmlSelectElement).value();
-    let amount: i64 = get_element_by_id!("amount", HtmlInputElement)
+    let amount: f64 = get_element_by_id!("amount", HtmlInputElement)
         .value()
         .parse()?;
     let comment = get_element_by_id!("comment", HtmlInputElement).value();
@@ -94,7 +94,7 @@ fn make_operation() -> Result<Operation, ClientError> {
     Ok(Operation {
         from,
         to,
-        amount,
+        amount: (amount * 100.0) as i64,
         comment,
         datetime,
     })
@@ -143,12 +143,12 @@ async fn refresh_content(accounts: &Vec<Account>) -> Result<(), ClientError> {
                     <tr>
                         <td scope="row">{}</td>
                         <td>{}</td>
-                        <td>{}</td>
+                        <td>{:.2}</td>
                     </tr>
             "#,
                 idx + 1,
                 account.name,
-                account.balance
+                (account.balance as f64) / 100.0
             )
         })
         .fold("".to_owned(), |x, y| x + &y);
