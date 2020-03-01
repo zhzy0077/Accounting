@@ -1,4 +1,4 @@
-name: Docker
+name: Build & Deploy
 
 on:
   push:
@@ -7,13 +7,9 @@ on:
       - master
 
 env:
-  # TODO: Change variable to your image's name.
   IMAGE_NAME: accounting-server
 
 jobs:
-
-  # Push image to GitHub Package Registry.
-  # See also https://docs.docker.com/docker-hub/builds/
   build:
     runs-on: ubuntu-latest
 
@@ -44,3 +40,10 @@ jobs:
 
           docker tag image $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - run: |
+          az vm run-command invoke -g accounting -n server --command-id RunShellScript --scripts 'bash /root/restart.sh'
