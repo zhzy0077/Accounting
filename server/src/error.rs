@@ -6,7 +6,7 @@ use std::{fmt, io};
 #[derive(Debug)]
 pub enum ServerError {
     DBError(String),
-    IOError,
+    IOError(io::Error),
     InternalError(String),
     UnauthorizedError,
 }
@@ -27,20 +27,20 @@ impl fmt::Display for ServerError {
 }
 
 impl From<io::Error> for ServerError {
-    fn from(_: io::Error) -> Self {
-        ServerError::IOError
+    fn from(e: io::Error) -> Self {
+        ServerError::IOError(e)
     }
 }
 
 impl From<r2d2::Error> for ServerError {
-    fn from(_: r2d2::Error) -> Self {
-        ServerError::IOError
+    fn from(e: r2d2::Error) -> Self {
+        ServerError::DBError(e.to_string())
     }
 }
 
 impl From<rusqlite::Error> for ServerError {
-    fn from(_: rusqlite::Error) -> Self {
-        ServerError::IOError
+    fn from(e: rusqlite::Error) -> Self {
+        ServerError::DBError(e.to_string())
     }
 }
 

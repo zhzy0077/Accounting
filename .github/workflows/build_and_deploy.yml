@@ -45,5 +45,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - run: |
+      - name: Deploy
+        run: |
           az vm run-command invoke -g accounting -n server --command-id RunShellScript --scripts 'bash /root/restart.sh'
