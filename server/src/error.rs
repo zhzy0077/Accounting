@@ -1,7 +1,7 @@
 use actix_web::error;
 use actix_web::http::StatusCode;
 use std::fmt::Formatter;
-use std::{fmt, io};
+use std::{fmt, io, ffi};
 
 #[derive(Debug)]
 pub enum ServerError {
@@ -53,5 +53,12 @@ impl From<dotenv::Error> for ServerError {
 impl From<config::ConfigError> for ServerError {
     fn from(e: config::ConfigError) -> Self {
         ServerError::InternalError(format!("Unable to parse: {}", e))
+    }
+}
+
+impl From<ffi::OsString> for ServerError {
+    fn from(e: ffi::OsString) -> Self {
+        // It's unlikely to happen.
+        ServerError::InternalError(format!("{:?}", e))
     }
 }

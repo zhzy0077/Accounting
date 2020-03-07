@@ -19,3 +19,9 @@ pub struct Operation {
 pub struct LoginChallenge {
     pub token: String,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DbVersion {
+    pub version: String,
+    pub deploy_at: i64,
+}

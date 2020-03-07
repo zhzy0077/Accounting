@@ -14,6 +14,7 @@ WORKDIR /accounting
 
 RUN apt update
 RUN apt install -y sqlite3 libsqlite3-dev
+COPY --from=builder /usr/src/accounting/db /accounting/db
 COPY --from=builder /usr/src/accounting/target/release/server /accounting/server
 COPY --from=builder /usr/src/accounting/client/www/ /accounting/static/
 COPY --from=builder /usr/src/accounting/client/pkg/client.js /accounting/static/client.js

@@ -1,9 +1,11 @@
 use crate::error::ServerError;
 use r2d2_sqlite::SqliteConnectionManager;
 use rusqlite::{params, NO_PARAMS};
-use shared::Account;
+use shared::{Account, DbVersion};
 use shared::Operation;
 use std::path::Path;
+use std::fs;
+use std::fs::DirEntry;
 
 pub type Pool = r2d2::Pool<SqliteConnectionManager>;
 
@@ -89,5 +91,59 @@ impl Database {
         } else {
             Ok(())
         }
+    }
+
+    pub fn current_db_version(&self) -> Result<DbVersion, ServerError> {
+        let conn = self.pool.get()?;
+        let mut stmt = conn.prepare("SELECT VERSION, DEPLOY_AT FROM DB_VERSION ORDER BY VERSION DESC")?;
+        let db_version = stmt.query_row(NO_PARAMS, |row| {
+            Ok(DbVersion {
+                version: row.get(0)?,
+                deploy_at: row.get(1)?,
+            })
+        })?;
+
+        return Ok(db_version);
+    }
+
+    pub fn execute(&self, sql: &str) -> Result<(), ServerError> {
+        let conn = self.pool.get()?;
+        conn.execute_batch(sql)?;
+
+        return Ok(());
+    }
+
+    pub fn migrate<P: AsRef<Path>>(&self, path: P) -> Result<(), ServerError> {
+        let mut migrations: Vec<DirEntry> = fs::read_dir(path)?
+            .map(|dir| dir.unwrap())
+            .collect();
+
+        migrations.sort_by_key(|dir| dir.file_name());
+
+        let current_version = match self.current_db_version() {
+            Ok(version) => Some(version),
+            Err(_) => {
+                info!("No database version found. Initializing...");
+                None
+            }
+        };
+
+        for migration in migrations {
+            let file_string = migration.file_name().into_string()?;
+            let file_name = file_string.split('.').nth(0);
+            if match (file_name, &current_version) {
+                (Some(file_name), Some(version)) => file_name > &version.version[..],
+                (Some(_), None) => true,
+                (None, _) => false,
+            } {
+                info!("Applying database migration {:?}.", migration.file_name());
+                let sql = fs::read_to_string(migration.path())?;
+                self.execute(&sql)?;
+            }
+        }
+
+        info!("The database is now the latest version.");
+
+        Ok(())
     }
 }

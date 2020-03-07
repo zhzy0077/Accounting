@@ -18,6 +18,7 @@ use shared::{LoginChallenge, Operation, Account};
 struct ServerConfig {
     bind_addr: String,
     db_addr: String,
+    migration_addr: String,
 }
 
 impl ServerConfig {
@@ -94,9 +95,10 @@ async fn main() -> Result<(), ServerError> {
     env_logger::init();
 
     let cfg = ServerConfig::new()?;
-    info!("init");
+    info!("Configuration is load successfully.");
 
     let db = Database::new(cfg.db_addr);
+    db.migrate(cfg.migration_addr)?;
 
     let mut key = [0u8; 128];
     rand::thread_rng().fill_bytes(&mut key);
