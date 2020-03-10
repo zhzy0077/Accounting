@@ -8,7 +8,7 @@ edition = "2018"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-shared = { path = "../shared" }
+entities = { path = "../entities" }
 
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wee_alloc = "0.4"

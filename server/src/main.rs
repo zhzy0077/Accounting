@@ -12,7 +12,7 @@ use config::{Config, ConfigError, Environment};
 use data::Database;
 use rand::RngCore;
 use serde::Deserialize;
-use shared::{LoginChallenge, Operation, Account};
+use entities::{LoginChallenge, Operation, Account};
 
 #[derive(Deserialize)]
 struct ServerConfig {

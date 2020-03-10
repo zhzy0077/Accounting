@@ -1,8 +1,7 @@
 use crate::error::ServerError;
 use r2d2_sqlite::SqliteConnectionManager;
 use rusqlite::{params, NO_PARAMS};
-use shared::{Account, DbVersion};
-use shared::Operation;
+use entities::{Account, DbVersion, Operation};
 use std::path::Path;
 use std::fs;
 use std::fs::DirEntry;

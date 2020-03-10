@@ -1,6 +1,6 @@
 use crate::error::ClientError;
 use js_sys::Date;
-use shared::{Account, Operation};
+use entities::{Account, Operation};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::{Document, Element, HtmlElement, HtmlInputElement, HtmlSelectElement, Window};

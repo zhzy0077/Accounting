@@ -1,4 +1,4 @@
-use shared::{Account, LoginChallenge, Operation};
+use entities::{Account, LoginChallenge, Operation};
 
 use crate::error::ClientError;
 use crate::log;

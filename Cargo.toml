@@ -1,6 +1,8 @@
 [workspace]
 members = [
-    "shared",
+    "entities",
+    "transaction/parser",
+    "transaction/merger",
     "server",
     "client",
 ]

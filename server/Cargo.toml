@@ -5,6 +5,8 @@ authors = ["Zhiyuan Zheng <zhiyuan.zheng@yandex.com>"]
 edition = "2018"
 
 [dependencies]
+entities = { path = "../entities" }
+
 actix-web = "2.0"
 actix-rt = "1.0"
 actix-files = "0.2"
@@ -21,5 +23,3 @@ chrono = "0.4"
 rand = "0.7"
 config = "0.10"
 serde = { version = "1.0", features = ["derive"] }
-
-shared = { path = "../shared" }
