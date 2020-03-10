@@ -16,6 +16,15 @@ pub struct Operation {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct Transaction {
+    pub datetime: i64,
+    pub from: String,
+    pub to: String,
+    pub amount: i64,
+    pub description: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct LoginChallenge {
     pub token: String,
 }

@@ -1,7 +1,11 @@
 [package]
-name = "transaction-parser"
+name = "transaction_parser"
 version = "0.0.1"
 authors = ["Zhiyuan Zheng <zhiyuan.zheng@yandex.com>"]
 edition = "2018"
 
 [dependencies]
+entities = { path = "../../entities" }
+
+chardet = "0.2"
+encoding = "0.2"
