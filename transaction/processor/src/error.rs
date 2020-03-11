@@ -1,5 +1,5 @@
-use std::io;
 use std::borrow::Cow;
+use std::{error, io};
 
 #[derive(Debug)]
 pub enum Error {
@@ -7,6 +7,7 @@ pub enum Error {
     Encoding { best_match: String },
     UnknownEncoding,
     Decoding(String),
+    CsvError(csv::Error),
 }
 
 impl From<io::Error> for Error {
@@ -21,3 +22,8 @@ impl From<Cow<'static, str>> for Error {
     }
 }
 
+impl From<csv::Error> for Error {
+    fn from(e: csv::Error) -> Self {
+        Error::CsvError(e)
+    }
+}

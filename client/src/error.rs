@@ -1,5 +1,5 @@
-use std::num::ParseIntError;
 use std::num::ParseFloatError;
+use std::num::ParseIntError;
 
 #[derive(Debug)]
 pub enum ClientError {

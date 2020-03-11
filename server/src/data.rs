@@ -1,10 +1,10 @@
 use crate::error::ServerError;
+use entities::{Account, DbVersion, Operation};
 use r2d2_sqlite::SqliteConnectionManager;
 use rusqlite::{params, NO_PARAMS};
-use entities::{Account, DbVersion, Operation};
-use std::path::Path;
 use std::fs;
 use std::fs::DirEntry;
+use std::path::Path;
 
 pub type Pool = r2d2::Pool<SqliteConnectionManager>;
 
@@ -94,7 +94,8 @@ impl Database {
 
     pub fn current_db_version(&self) -> Result<DbVersion, ServerError> {
         let conn = self.pool.get()?;
-        let mut stmt = conn.prepare("SELECT VERSION, DEPLOY_AT FROM DB_VERSION ORDER BY VERSION DESC")?;
+        let mut stmt =
+            conn.prepare("SELECT VERSION, DEPLOY_AT FROM DB_VERSION ORDER BY VERSION DESC")?;
         let db_version = stmt.query_row(NO_PARAMS, |row| {
             Ok(DbVersion {
                 version: row.get(0)?,
@@ -113,9 +114,7 @@ impl Database {
     }
 
     pub fn migrate<P: AsRef<Path>>(&self, path: P) -> Result<(), ServerError> {
-        let mut migrations: Vec<DirEntry> = fs::read_dir(path)?
-            .map(|dir| dir.unwrap())
-            .collect();
+        let mut migrations: Vec<DirEntry> = fs::read_dir(path)?.map(|dir| dir.unwrap()).collect();
 
         migrations.sort_by_key(|dir| dir.file_name());
 

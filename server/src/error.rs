@@ -1,7 +1,7 @@
 use actix_web::error;
 use actix_web::http::StatusCode;
 use std::fmt::Formatter;
-use std::{fmt, io, ffi};
+use std::{ffi, fmt, io};
 
 #[derive(Debug)]
 pub enum ServerError {

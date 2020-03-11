@@ -10,9 +10,9 @@ use actix_web::{middleware, web, App, Error as AWError, HttpResponse, HttpServer
 use chrono::Duration;
 use config::{Config, ConfigError, Environment};
 use data::Database;
+use entities::{Account, LoginChallenge, Operation};
 use rand::RngCore;
 use serde::Deserialize;
-use entities::{LoginChallenge, Operation, Account};
 
 #[derive(Deserialize)]
 struct ServerConfig {
@@ -116,7 +116,11 @@ async fn main() -> Result<(), ServerError> {
             .wrap(middleware::Logger::default())
             .service(web::resource("/login").route(web::post().to(login)))
             .service(web::resource("/operation").route(web::post().to(operation)))
-            .service(web::resource("/account").route(web::get().to(account)).route(web::post().to(add_account)))
+            .service(
+                web::resource("/account")
+                    .route(web::get().to(account))
+                    .route(web::post().to(add_account)),
+            )
             .service(actix_files::Files::new("/", "./static/").index_file("index.html"))
     })
     .bind(cfg.bind_addr)?
