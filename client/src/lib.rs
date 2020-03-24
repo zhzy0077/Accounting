@@ -133,7 +133,7 @@ pub async fn login() -> Result<(), JsValue> {
     Ok(())
 }
 
-async fn refresh_content(accounts: &Vec<Account>) -> Result<(), ClientError> {
+async fn refresh_content(accounts: &[Account]) -> Result<(), ClientError> {
     let html = accounts
         .iter()
         .enumerate()
@@ -163,7 +163,7 @@ fn get_by_id(id: &str) -> Element {
         let document: Document = web_sys::window()?.document()?;
         document.get_element_by_id(id)
     }
-    get_by_id_option(id).expect(&format!("{} not found.", id))
+    get_by_id_option(id).unwrap_or_else(|| panic!("{} not found.", id))
 }
 
 fn redirect(href: &str) -> Result<(), JsValue> {

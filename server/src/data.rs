@@ -38,7 +38,7 @@ impl Database {
             ));
         }
 
-        return Ok(());
+        Ok(())
     }
 
     pub fn update_balance(&self, account_name: &str, delta: i64) -> Result<(), ServerError> {
@@ -52,7 +52,7 @@ impl Database {
             ));
         }
 
-        return Ok(());
+        Ok(())
     }
 
     pub fn get_secret(&self) -> Result<String, ServerError> {
@@ -60,7 +60,7 @@ impl Database {
         let mut stmt = conn.prepare("SELECT TOKEN FROM SECRET LIMIT 1")?;
         let secret = stmt.query_row(NO_PARAMS, |row| Ok(row.get(0)?))?;
 
-        return Ok(secret);
+        Ok(secret)
     }
 
     pub fn get_accounts(&self) -> Result<Vec<Account>, ServerError> {
@@ -103,14 +103,14 @@ impl Database {
             })
         })?;
 
-        return Ok(db_version);
+        Ok(db_version)
     }
 
     pub fn execute(&self, sql: &str) -> Result<(), ServerError> {
         let conn = self.pool.get()?;
         conn.execute_batch(sql)?;
 
-        return Ok(());
+        Ok(())
     }
 
     pub fn migrate<P: AsRef<Path>>(&self, path: P) -> Result<(), ServerError> {
@@ -128,7 +128,7 @@ impl Database {
 
         for migration in migrations {
             let file_string = migration.file_name().into_string()?;
-            let file_name = file_string.split('.').nth(0);
+            let file_name = file_string.split('.').next();
             if match (file_name, &current_version) {
                 (Some(file_name), Some(version)) => file_name > &version.version[..],
                 (Some(_), None) => true,

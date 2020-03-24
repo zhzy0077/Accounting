@@ -1,5 +1,5 @@
 use std::borrow::Cow;
-use std::{error, io};
+use std::io;
 
 #[derive(Debug)]
 pub enum Error {

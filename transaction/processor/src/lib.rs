@@ -1,11 +1,8 @@
 use crate::error::Error;
 use crate::parser::{AlipayParser, CgbCreditParser, CmbDebitParser, WeChatPayParser};
-use crate::TransactionSource::CmbDebit;
 use encoding::{label, DecoderTrap};
 use entities::Transaction;
-use std::fmt;
-use std::fs::{File, OpenOptions};
-use std::io;
+use std::fs::OpenOptions;
 use std::io::Read;
 use std::path::Path;
 
@@ -53,7 +50,7 @@ pub fn parse<P: AsRef<Path>>(path: P, config: ParserConfig) -> Result<Vec<Transa
     get_parser(config).parse(content)
 }
 
-fn detect_encoding(content: &Vec<u8>) -> Result<String> {
+fn detect_encoding(content: &[u8]) -> Result<String> {
     let (charset, confidence, _) = chardet::detect(content);
 
     if confidence < ENCODING_DETECT_CONFIDENCE_THRESHOLD {
@@ -71,15 +68,20 @@ fn get_parser(config: ParserConfig) -> Box<dyn Parser> {
         TransactionSource::CgbCredit => Box::new(CgbCreditParser {
             account_name: config.account_name,
         }),
-        TransactionSource::CmbDebit => Box::new(CmbDebitParser),
-        TransactionSource::Alipay => Box::new(AlipayParser),
-        TransactionSource::WeChatPay => Box::new(WeChatPayParser),
+        TransactionSource::CmbDebit => Box::new(CmbDebitParser {
+            account_name: config.account_name,
+        }),
+        TransactionSource::Alipay => Box::new(AlipayParser {
+            account_name: config.account_name,
+        }),
+        TransactionSource::WeChatPay => Box::new(WeChatPayParser {
+            account_name: config.account_name,
+        }),
     }
 }
 
 #[cfg(test)]
 mod tests {
-    // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
 
     #[test]
